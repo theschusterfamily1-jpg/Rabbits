@@ -4,8 +4,15 @@
 #r=growth rate
 #n=year
 
-#Find out how to communicate the population model to python
 #Find out how to put graphs in python
+import matplotlib.pyplot as plt
+import numpy as np
+
+fig, ax = plt.subplots()
+ax.plot([1, 2, 3, 4], [1, 4, 2, 3])
+plt.show()
+
+#Find out how to communicate the population model to python
 #Prompt the user for growth rate and initial population
 #Graph the population model starting with a specific population and growth rate
 
