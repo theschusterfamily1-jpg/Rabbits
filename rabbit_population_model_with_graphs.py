@@ -1,19 +1,36 @@
 #Model the number of rabbits from a starting population and each successive generation
 #population model: x_(n+1) = rx_n(1-x_n)
-#x=rabbit population
-#r=growth rate
+#x=rabbit population, as a percentage of the carrying capacity. Cannot be over 1.
+#r=growth rate, 0-4
 #n=year
 
 #Find out how to put graphs in python
 import matplotlib.pyplot as plt
 import numpy as np
 
+x = 5
+
+r = np.linspace(0,400,5)
+y = np.linspace(0,400,5)
+
+
+x_1 = r*x*(1-x)
+
 fig, ax = plt.subplots()
-ax.plot([1, 2, 3, 4], [1, 4, 2, 3])
+ax.plot(x_1,y)
+ax.set_xlabel('Population')
+ax.set_ylabel('Growth Rate')
+ax.set_title("Population over Time")
+
 plt.show()
 
 #Find out how to communicate the population model to python
-#Prompt the user for growth rate and initial population
-#Graph the population model starting with a specific population and growth rate
+#y=rx(1-x)
+#set y to a variable that feeds back into the equation as the next value of x?
 
-#Figure out what the second graph was supposed to be because you didn't take good enough notes
+#Prompt the user for initial population (fraction of 1)
+#Graph the population model starting with a specific population and growth rate of 0, rising to 4
+
+#the two graphs should be:
+##the growth rate vs population over time
+##the growth rate vs where the population settles / the limit of the population
