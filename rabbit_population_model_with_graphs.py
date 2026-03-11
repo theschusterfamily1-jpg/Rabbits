@@ -8,16 +8,22 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-x = 5
+initial_pop = .5
 
-r = np.linspace(0,400,5)
-y = np.linspace(0,400,5)
+rate = np.linspace(0,4,100)
+print(rate)
 
+x = []
+#x_1 = r*x*(1-x)
 
-x_1 = r*x*(1-x)
+for i in range(100):
+    x.append(.5*initial_pop*(1-initial_pop))
+    initial_pop = x[-1]
+
+print(x)
 
 fig, ax = plt.subplots()
-ax.plot(x_1,y)
+ax.plot(rate,x)
 ax.set_xlabel('Population')
 ax.set_ylabel('Growth Rate')
 ax.set_title("Population over Time")
