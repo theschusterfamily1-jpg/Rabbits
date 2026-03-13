@@ -17,7 +17,7 @@ growth_rate = 2.6
 def set_points(r,p):
     x=[]
     y=[]
-    for i in range(100):
+    for i in range(10000):
         x.append(i)
         y.append(r*p*(1-p))
         p = y[-1]
@@ -26,7 +26,7 @@ def set_points(r,p):
 init_x, init_y = set_points(growth_rate, initial_pop)
 
 fig, ax = plt.subplots()
-ax.plot(init_x,init_y)
+ax.plot(init_x[:100],init_y[:100])
 fig.subplots_adjust(bottom=0.35)
 
 #Growth Rate Slider
@@ -49,31 +49,57 @@ pop_slider = Slider(
     valinit = initial_pop
 )
 
-# The function to be called anytime a slider's value changes
-
+#Updates the graph based on the new slider position
 def update_graph(val):
     growth_rate = grow_slider.val
     initial_pop = pop_slider.val
     ax.clear()
+    ax.set_xlabel('Time')
+    ax.set_ylabel('Population')
+    ax.set_title("Rabbit Population Over Time")
     x, y = set_points(growth_rate, initial_pop)
-    ax.plot(x,y)
+    ax.plot(x[:100],y[:100])
 
 
+#Graph logistics
 grow_slider.on_changed(update_graph)
 pop_slider.on_changed(update_graph)
-
-
 
 #Graph Labels
 ax.set_xlabel('Time')
 ax.set_ylabel('Population')
-ax.set_title("Population Over Time")
+ax.set_title("Rabbit Population Over Time")
+
+#Second Graph
+##the growth rate (x-axis) vs where the population settles / the limit of the population (y)
+##interval for growth rate: .01
+#plt.figure(2)
+fig2, ax2 = plt.subplots()
+
+def graph(x):
+    """Gets y values from growth rate, then adds to scatter plot"""
+    x2 = x
+    y2 = []
+    p2 =.7
+
+    for i in range(1000):
+        y2.append(x*p2*(1-p2))
+        p2 = y2[-1]
+
+    for i in range(len(y2)):
+        y2[i] = y2[i] = round(y2[i], 2)
+
+    y2=list(set(y2[500:]))
+
+    for i in range(len(y2)):
+        plt.scatter(x2,y2[i], s=2)
+
+for i in range(0,400,1):
+    graph(i/100)
+
+#Graph Labels
+ax2.set_xlabel('Growth Rate')
+ax2.set_ylabel('Population Limit')
+ax2.set_title("Population Limits at Different Growth Rates")
 
 plt.show()
-
-
-#Graph the population model starting with a specific population and growth rate of 0, rising to 4
-
-#the two graphs should be:
-##the growth rate vs population over time
-##the growth rate vs where the population settles / the limit of the population
