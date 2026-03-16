@@ -4,52 +4,25 @@
 #r=growth rate, 0-4
 #n=year
 
-#Find out how to put graphs in python
+#Creates two charts
+#First Plot: Shows the limit of a population over time as a function of its initial population and growth rate. Includes sliders to update the two inputs on-the-fly.
+#Second Plot: Uses a scatter plot to graph the population limit against the growth rate - population limit diverges above 3.0
+
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.widgets import Button, Slider
+from matplotlib.widgets import Slider
 
-initial_pop = .3
-growth_rate = 2.6
-
-#x_1 = r*x*(1-x)
-
+#Creates x and y arrays for the first graph, given r=growth rate and p=initial population
 def set_points(r,p):
     x=[]
     y=[]
-    for i in range(10000):
+    for i in range(1000):
         x.append(i)
         y.append(r*p*(1-p))
         p = y[-1]
     return x, y
 
-init_x, init_y = set_points(growth_rate, initial_pop)
-
-fig, ax = plt.subplots()
-ax.plot(init_x[:100],init_y[:100])
-fig.subplots_adjust(bottom=0.35)
-
-#Growth Rate Slider
-axgrow = fig.add_axes([0.25, .2, 0.65, 0.03])
-grow_slider = Slider(
-    ax=axgrow,
-    label ='Growth rate',
-    valmin=0,
-    valmax=4,
-    valinit=growth_rate
-)
-
-#Initial Population Slider
-axpop = fig.add_axes([0.25, 0.1, 0.65, 0.03])
-pop_slider = Slider(
-    ax=axpop,
-    label = 'Initial Population',
-    valmin = 0,
-    valmax = 1,
-    valinit = initial_pop
-)
-
-#Updates the graph based on the new slider position
+#Updates the first graph based on new slider positions for either growth rate or initial population
 def update_graph(val):
     growth_rate = grow_slider.val
     initial_pop = pop_slider.val
@@ -60,22 +33,7 @@ def update_graph(val):
     x, y = set_points(growth_rate, initial_pop)
     ax.plot(x[:100],y[:100])
 
-
-#Graph logistics
-grow_slider.on_changed(update_graph)
-pop_slider.on_changed(update_graph)
-
-#Graph Labels
-ax.set_xlabel('Time')
-ax.set_ylabel('Population')
-ax.set_title("Rabbit Population Over Time")
-
-#Second Graph
-##the growth rate (x-axis) vs where the population settles / the limit of the population (y)
-##interval for growth rate: .01
-#plt.figure(2)
-fig2, ax2 = plt.subplots()
-
+#Takes a variable rate and starting population and calculates the end population after x years which is returned as a float value, to be added to the second graph
 def graph(x):
     """Gets y values from growth rate, then adds to scatter plot"""
     x2 = x
@@ -94,12 +52,64 @@ def graph(x):
     for i in range(len(y2)):
         plt.scatter(x2,y2[i], s=2)
 
-for i in range(0,400,1):
-    graph(i/100)
+def main():
 
-#Graph Labels
-ax2.set_xlabel('Growth Rate')
-ax2.set_ylabel('Population Limit')
-ax2.set_title("Population Limits at Different Growth Rates")
+    #Initialize Variables
+    initial_pop = .3
+    growth_rate = 2.6
+    init_x, init_y = set_points(growth_rate, initial_pop)
 
-plt.show()
+    #Initialize First Plot
+    fig, ax = plt.subplots()
+    ax.plot(init_x[:100],init_y[:100])
+    fig.subplots_adjust(bottom=0.35)
+
+    #Growth Rate Slider for First Plot
+    axgrow = fig.add_axes([0.25, .2, 0.65, 0.03])
+    grow_slider = Slider(
+        ax=axgrow,
+        label ='Growth rate',
+        valmin=0,
+        valmax=4,
+        valinit=growth_rate
+            )
+
+    #Initial Population Slider for First Plot
+    axpop = fig.add_axes([0.25, 0.1, 0.65, 0.03])
+    pop_slider = Slider(
+        ax=axpop,
+        label = 'Initial Population',
+        valmin = 0,
+        valmax = 1,
+        valinit = initial_pop
+        )
+
+
+    #First Plot logistics
+    grow_slider.on_changed(update_graph)
+    pop_slider.on_changed(update_graph)
+
+    #First Plot Labels
+    ax.set_xlabel('Time')
+    ax.set_ylabel('Population')
+    ax.set_title("Rabbit Population Over Time")
+
+    #Second Graph
+    ##the growth rate (x-axis) vs where the population settles / the limit of the population (y)
+    
+    #Initialize Second Plot
+    fig2, ax2 = plt.subplots()
+
+    #Create points for mapping to the Second Plot (Scatter Plot)
+    for i in range(0,400,1):
+        graph(i/100)
+
+    #Graph Labels
+    ax2.set_xlabel('Growth Rate')
+    ax2.set_ylabel('Population Limit')
+    ax2.set_title("Population Limits at Different Growth Rates")
+
+    plt.show()
+
+if __name__ == "__main__":
+    main()
