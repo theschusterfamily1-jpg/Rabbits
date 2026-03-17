@@ -22,17 +22,6 @@ def set_points(r,p):
         p = y[-1]
     return x, y
 
-#Updates the first graph based on new slider positions for either growth rate or initial population
-def update_graph(val):
-    growth_rate = grow_slider.val
-    initial_pop = pop_slider.val
-    ax.clear()
-    ax.set_xlabel('Time')
-    ax.set_ylabel('Population')
-    ax.set_title("Rabbit Population Over Time")
-    x, y = set_points(growth_rate, initial_pop)
-    ax.plot(x[:100],y[:100])
-
 #Takes a variable rate and starting population and calculates the end population after x years which is returned as a float value, to be added to the second graph
 def graph(x):
     """Gets y values from growth rate, then adds to scatter plot"""
@@ -54,6 +43,17 @@ def graph(x):
 
 def main():
 
+    #Updates the first graph based on new slider positions for either growth rate or initial population
+    def update_graph(val):
+        growth_rate = grow_slider.val
+        initial_pop = pop_slider.val
+        ax.clear()
+        ax.set_xlabel('Time')
+        ax.set_ylabel('Population')
+        ax.set_title("Rabbit Population Over Time")
+        x, y = set_points(growth_rate, initial_pop)
+        ax.plot(x[:100],y[:100])
+
     #Initialize Variables
     initial_pop = .3
     growth_rate = 2.6
@@ -72,7 +72,7 @@ def main():
         valmin=0,
         valmax=4,
         valinit=growth_rate
-            )
+        )
 
     #Initial Population Slider for First Plot
     axpop = fig.add_axes([0.25, 0.1, 0.65, 0.03])
